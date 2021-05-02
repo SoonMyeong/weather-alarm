@@ -13,12 +13,19 @@ public class Main {
         String slack = "slack";
         //기상개황조회
         String apiUrl = "";
+        //육상예보조회
+        String landApiUrl = "";
         //슬랙 webHook
         String slackHookUrl = "";
 
         //냠냠냠
         ApiRequest apiRequest = new ApiRequest();
         DataProcess dataProcess = new DataProcess();
+
+        apiRequest.request(slackHookUrl
+                ,dataProcess.landApiResponseProcess(apiRequest.request(landApiUrl,"",weather))
+                ,slack
+        );
 
         apiRequest.request(slackHookUrl
                 ,dataProcess.apiResponseProcess(apiRequest.request(apiUrl,"",weather))

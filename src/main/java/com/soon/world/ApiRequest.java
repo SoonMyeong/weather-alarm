@@ -5,19 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class ApiRequest {
 
-    public String request(String apiUrl , String message, String type) throws IOException {
-        URL url = new URL(apiUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
+    public String request(HttpURLConnection connection , String message, String type) throws IOException {
         if(type.equals("weather")) {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-type", "application/json");
-
         }
         if(type.equals("slack")){
             connection.setRequestMethod("POST");
@@ -31,9 +26,9 @@ public class ApiRequest {
 
         BufferedReader rd;
         if(connection.getResponseCode() >=200 && connection.getResponseCode() <= 300){
-            rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            rd = getBufferedReader(connection);
         }else{
-            rd = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            throw new IOException("connection Exception");
         }
 
         StringBuilder sb = new StringBuilder();
@@ -45,5 +40,13 @@ public class ApiRequest {
         connection.disconnect();
 
         return sb.toString();
+    }
+
+    public BufferedReader getBufferedReader(HttpURLConnection connection) throws IOException {
+        return new BufferedReader(getInputStreamReader(connection));
+    }
+
+    public InputStreamReader getInputStreamReader(HttpURLConnection connection) throws IOException {
+        return new InputStreamReader(connection.getInputStream());
     }
 }

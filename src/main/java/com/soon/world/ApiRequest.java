@@ -18,6 +18,7 @@ public class ApiRequest {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             String req = "payload={\"text\":\""+message+"\"}";
+            System.out.println(req);
 
             OutputStream os = connection.getOutputStream();
             os.write(req.getBytes(StandardCharsets.UTF_8));

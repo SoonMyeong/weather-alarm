@@ -9,12 +9,15 @@ import java.nio.charset.StandardCharsets;
 
 public class ApiRequest {
 
+    private static final String WEATHER = "weather";
+    private static final String SLACK = "slack";
+
     public String request(HttpURLConnection connection , String message, String type) throws IOException {
-        if(type.equals("weather")) {
+        if(type.equals(WEATHER)) {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-type", "application/json");
         }
-        if(type.equals("slack")){
+        if(type.equals(SLACK)){
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             String req = "payload={\"text\":\""+message+"\"}";
